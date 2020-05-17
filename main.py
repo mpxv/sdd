@@ -22,7 +22,7 @@ hog = cv2.HOGDescriptor()
 hog.setSVMDetector( cv2.HOGDescriptor_getDefaultPeopleDetector() )
 frame=cv2.imread('dataset/test0.jpeg')
 
-found,w=hog.detectMultiScale(frame, winStride=(8,8), padding=(32,32), scale=1.05)
+found, w = hog.detectMultiScale(frame, winStride=(8,8), padding=(32,32), scale=1.05)
 
 found = np.sort(found, axis=0)
 

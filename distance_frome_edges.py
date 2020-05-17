@@ -27,6 +27,33 @@ def find_marker(image, num_people = 3):
 	# compute the areas of all the triangles of people
 	return rectangles
 
+
+def inside(r, q):
+    rx, ry, rw, rh = r
+    qx, qy, qw, qh = q
+    return rx > qx and ry > qy and rx + rw < qx + qw and ry + rh < qy + qh
+
+
+def draw_detections(img, rects, thickness = 1):
+    for x, y, w, h in rects:
+        # the HOG detector returns slightly larger rectangles than the real objects.
+        # so we slightly shrink the rectangles to get a nicer output.
+        pad_w, pad_h = int(0.15*w), int(0.05*h)
+        cv2.rectangle(img, (x+pad_w, y+pad_h), (x+w-pad_w, y+h-pad_h), (0, 255, 0), thickness)
+
+
+hog = cv2.HOGDescriptor()
+hog.setSVMDetector( cv2.HOGDescriptor_getDefaultPeopleDetector() )
+frame=cv2.imread('dataset/test0.jpeg')
+
+found, w = hog.detectMultiScale(frame, winStride=(8,8), padding=(32,32), scale=1.05)
+
+found = np.sort(found, axis=0)
+
+draw_detections(frame, found)
+cv2.imshow('feed', frame)
+
+
 def distance_from_edge(actual_width, focal_length, pixel_width):
 	return (actual_width * focal_length / pixel_width)
 
@@ -35,20 +62,17 @@ KNOWN_WIDTH = 12.0
 
 
 image = cv2.imread("/Users/stanley/Hackathons/HTHS Hackathon/sdd/dataset/test0.jpeg")
-marker = find_marker(image)
-focalLength = (marker[1][0] * KNOWN_DISTANCE) / KNOWN_WIDTH
 
+focalLengths = []
+inches = []
 
-marker = find_marker(image)
-inches = distance_to_camera(KNOWN_WIDTH, focalLength, marker[1][0])
-
-# Draw a box around the human subject
-box = cv2.cv.BoxPoints(marker) if imutils.is_cv2() else cv2.boxPoints(marker)
-box = np.int0(box)
-cv2.drawContours(image, [box], -1, (0, 255, 0), 2)
-cv2.putText(image, "%.2fft" % (inches / 12),
-	(image.shape[1] - 200, image.shape[0] - 20), cv2.FONT_HERSHEY_SIMPLEX,
-	2.0, (0, 255, 0), 3)
+for i in range(3):
+	focalLength = (marker[i][1][0] * KNOWN_DISTANCE) / KNOWN_WIDTH
+	focalLengths.append(focalLength)
+	inches.append(distance_from_edge(KNOWN_WIDTH, focalLengths[i], marker[i][1][0]))
+	box = cv2.cv.BoxPoints(marker[i]) if imutils.is_cv2() else cv2.boxPoints(marker[i])
+	box = np.int0(box)
+	cv2.drawContours(image, [box], -1, (0, 255, 0), 2)
 
 
 
