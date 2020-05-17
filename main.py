@@ -20,7 +20,7 @@ def draw_detections(img, rects, thickness = 1):
 
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector( cv2.HOGDescriptor_getDefaultPeopleDetector() )
-frame=cv2.imread('social-distancing-hero.png')
+frame=cv2.imread('dataset/test0.jpeg')
 
 found,w=hog.detectMultiScale(frame, winStride=(8,8), padding=(32,32), scale=1.05)
 
@@ -34,12 +34,6 @@ output = []
 for p1,p2 in zip(found[:-1],found[1:]):
     output.append([p2[0]-p1[0],p1[3]]) # dist, height
 
-while True:
-    ch = 0xFF & cv2.waitKey(1)
-    if ch == 27:
-        break
-cv2.destroyAllWindows()
-
 i = 1
 for pair in output:
     # pair[0] = distance between the person and the next person in px
@@ -50,3 +44,12 @@ for pair in output:
     else:
         print("Pair " + str(i) + ": Safe! Distance: " + str(round(distance)) + "cm")
     i += 1
+
+while True:
+    ch = 0xFF & cv2.waitKey(1)
+    if ch == 27:
+        break
+cv2.destroyAllWindows()
+
+
+
