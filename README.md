@@ -1,2 +1,2 @@
-# sdd
-hths.hacks() 2020 hackathon project. Social Distancing Detector.
+# Social Distancing Detector
+hths.hacks() 2020 hack. Social Distancing Detector.
