@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import math
 
 
 def inside(r, q):
@@ -37,3 +38,14 @@ while True:
     if ch == 27:
         break
 cv2.destroyAllWindows()
+
+i = 1
+for pair in output:
+    # pair[0] = distance between the person and the next person in px
+    # pair[1] = person's height in px
+    distance = (constants.AVG_HEIGHT / pair[1]) * pair[0]
+    if distance < 183:
+        print("Pair " + str(i) + ": Unsafe! Distance: " + str(round(distance)) + "cm")
+    else:
+        print("Pair " + str(i) + ": Safe! Distance: " + str(round(distance)) + "cm")
+    i += 1
