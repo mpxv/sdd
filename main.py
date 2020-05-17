@@ -45,7 +45,7 @@ for pair in output:
     # pair[0] = distance between the person and the next person in px
     # pair[1] = person's height in px
     distance = (constants.AVG_HEIGHT / pair[1]) * pair[0]
-    if distance < 183:
+    if distance < 183: # if less than 183 cm or 6 feet apart
         print("Pair " + str(i) + ": Unsafe! Distance: " + str(round(distance)) + "cm")
     else:
         print("Pair " + str(i) + ": Safe! Distance: " + str(round(distance)) + "cm")
