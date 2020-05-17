@@ -16,7 +16,7 @@ def draw_detections(img, rects, thickness = 1):
         # so we slightly shrink the rectangles to get a nicer output.
         pad_w, pad_h = int(0.15*w), int(0.05*h)
         cv2.rectangle(img, (x+pad_w, y+pad_h), (x+w-pad_w, y+h-pad_h), (0, 255, 0), thickness)
-
+        
 def draw_line(img, p1, p2, text, color):
     xy1=tuple(p1[:2]+p1[2:]//2)
     xy2=tuple(p2[:2]+p2[2:]//2)
