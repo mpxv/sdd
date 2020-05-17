@@ -21,8 +21,17 @@ hog.setSVMDetector( cv2.HOGDescriptor_getDefaultPeopleDetector() )
 frame=cv2.imread('social-distancing-hero.png')
 
 found,w=hog.detectMultiScale(frame, winStride=(8,8), padding=(32,32), scale=1.05)
+
+found = np.sort(found, axis=0)
+
 draw_detections(frame,found)
 cv2.imshow('feed',frame)
+
+output = []
+
+for p1,p2 in zip(found[:-1],found[1:]):
+    output.append([p2[0]-p1[0],p1[3]]) # dist, height
+
 while True:
     ch = 0xFF & cv2.waitKey(1)
     if ch == 27:
